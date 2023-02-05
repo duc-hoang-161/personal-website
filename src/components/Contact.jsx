@@ -83,7 +83,7 @@ export default function Contact(props) {
     ];
     return (
         <motion.div
-            className="px-12 py-8 transition-colors duration-300 transform border rounded-xl hover:border-transparent group dark:border-gray-700 dark:hover:border-transparent feature-card"
+            className="px-12 py-8 transition-colors duration-300 transform border rounded-xl hover:border-transparent group dark:border-gray-700 dark:hover:border-transparent feature-card mb-10"
             whileInView={{ y: [-40, 0], opacity: [0, 1] }}
             transition={{ duration: 1 }}
         >
@@ -93,7 +93,7 @@ export default function Contact(props) {
                         <img
                             class="mx-auto h-12 w-auto"
                             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                            alt="Your Company"
+                            alt="Email"
                         />
                         <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gradient">
                             Let's keep in touch

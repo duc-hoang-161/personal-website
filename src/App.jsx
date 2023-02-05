@@ -15,6 +15,7 @@ import {
     Loading,
 } from './components';
 import Contact from './components/Contact';
+import Testimonial from './components/Testimonial';
 
 const App = () => {
     const [isLoading, setIsLoading] = React.useState(true);
@@ -22,7 +23,7 @@ const App = () => {
     React.useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
-        }, 1600);
+        }, 500);
     }, []);
 
     if (isLoading) {
@@ -59,8 +60,6 @@ const App = () => {
                             <SkillsAndExperience />
                             <Education />
                             <Projects />
-                            <BlogPosts enabled={false} />
-                            <OpenSource />
                             <ExtraCurricular />
                             <Contact />
                         </div>

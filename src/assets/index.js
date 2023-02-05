@@ -43,8 +43,18 @@ import chargeswap from './chargeswap.png';
 import placeicon from './place-icon.svg';
 import recruitment from './recruitment.png';
 import huntly from './huntly.png';
+import ces from './ces.png';
+import gameloft from './gameloft.png';
+import miu from './miu.png';
+import bk from './bk.jpeg';
+import repo from './repo.png';
 
 export {
+    ces,
+    gameloft,
+    miu,
+    bk,
+    repo,
     airbnb,
     bill,
     binance,
