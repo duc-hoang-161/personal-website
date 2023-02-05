@@ -39,7 +39,7 @@ export default function Contact(props) {
         {
             label: 'Message',
             name: 'message',
-            type: 'text',
+            type: 'textarea',
             value: message,
             placeholder: "Let's be friends!",
             onChange: onFieldChange,
