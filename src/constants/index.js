@@ -37,6 +37,7 @@ import {
     AiFillHtml5,
     AiOutlineGoogle,
     AiOutlineGitlab,
+    AiFillMessage,
 } from 'react-icons/ai';
 
 import {
@@ -78,13 +79,41 @@ import {
     SiSpringboot,
     SiAntdesign,
     SiGithub,
+    SiDocker,
+    SiRabbitmq,
+    SiPostgresql,
+    SiHive,
+    SiTableau,
+    SiNextdotjs,
+    SiAmazonaws,
+    SiCocos,
+    SiAndroid,
+    SiWebpack,
+    SiJest,
+    SiWordpress,
+    SiHeroku,
+    SiFirebase,
+    SiMongodb,
 } from 'react-icons/si';
 
-import { FaHardHat } from 'react-icons/fa';
+import {
+    FaDatabase,
+    FaFile,
+    FaHardHat,
+    FaKey,
+    FaPiggyBank,
+    FaStream,
+} from 'react-icons/fa';
 
 import { IoIosNotificationsOutline } from 'react-icons/io';
 
-import { DiCss3, DiMsqlServer, DiRuby } from 'react-icons/di';
+import {
+    DiCss3,
+    DiMsqlServer,
+    DiRuby,
+    DiSpark,
+    DiWindows,
+} from 'react-icons/di';
 
 export const resumeLink = '#';
 export const repoLink = 'https://github.com/duc-hoang-161/personal-website';
@@ -172,6 +201,11 @@ export const skills = [
         items: [
             { id: 'f-0', icon: SiExpress, name: 'Express' },
             {
+                id: 't-12',
+                icon: SiNextdotjs,
+                name: 'NextJS',
+            },
+            {
                 id: 'f-1',
                 icon: SiDjango,
                 name: 'Django',
@@ -208,8 +242,63 @@ export const skills = [
             },
             {
                 id: 'f-7',
-                icon: SiGraphql,
-                name: 'GraphQL',
+                icon: SiWordpress,
+                name: 'WordPress',
+            },
+            {
+                id: 't-10',
+                icon: SiJest,
+                name: 'Jest',
+            },
+            {
+                id: 't-11',
+                icon: SiWebpack,
+                name: 'Webpack',
+            },
+        ],
+    },
+    {
+        title: 'Cloud',
+        items: [
+            {
+                id: 't-15',
+                icon: SiAmazonaws,
+                name: 'AWS',
+            },
+            {
+                id: 't-13',
+                icon: SiFirebase,
+                name: 'Firebase',
+            },
+            {
+                id: 't-14',
+                icon: SiHeroku,
+                name: 'Heroku',
+            },
+        ],
+    },
+    {
+        title: 'Database',
+        items: [
+            {
+                id: 't-15',
+                icon: SiMongodb,
+                name: 'MongoDB',
+            },
+            {
+                id: 't-13',
+                icon: DiMsqlServer,
+                name: 'MS SQL Server',
+            },
+            {
+                id: 't-1',
+                icon: SiMysql,
+                name: 'MySQL',
+            },
+            {
+                id: 't-16',
+                icon: SiPostgresql,
+                name: 'PostgreSQL',
             },
         ],
     },
@@ -217,9 +306,9 @@ export const skills = [
         title: 'Tools',
         items: [
             {
-                id: 't-1',
-                icon: SiMysql,
-                name: 'MySQL',
+                id: 't-0',
+                icon: SiDocker,
+                name: 'Docker',
             },
             {
                 id: 't-2',
@@ -255,6 +344,11 @@ export const skills = [
                 id: 't-8',
                 icon: SiVite,
                 name: 'ViteJS',
+            },
+            {
+                id: 't-9',
+                icon: SiWebpack,
+                name: 'Webpack',
             },
         ],
     },
@@ -594,44 +688,49 @@ export const projects = [
             'In this application, users can create, rate and write comments about movies and tv series. Users can create favorite lists and they can share their lists with other users.',
         stack: [
             {
+                id: 'icon-0',
+                icon: SiJava,
+                name: 'Java',
+            },
+            {
                 id: 'icon-1',
-                icon: SiReact,
-                name: 'React',
+                icon: SiSpringboot,
+                name: 'Java Spring Boot',
             },
             {
                 id: 'icon-2',
-                icon: SiTailwindcss,
-                name: 'TailwindCSS',
+                icon: SiPostman,
+                name: 'Postman',
             },
             {
                 id: 'icon-3',
-                icon: SiWeb3Dotjs,
-                name: 'Web3.js',
+                icon: SiDocker,
+                name: 'Docker',
             },
             {
                 id: 'icon-4',
-                icon: SiSolidity,
-                name: 'Solidity',
+                icon: SiRabbitmq,
+                name: 'RabbitMQ',
             },
             {
                 id: 'icon-5',
-                icon: FaHardHat,
-                name: 'HardHat',
+                icon: SiGithub,
+                name: 'Github',
             },
             {
                 id: 'icon-6',
-                icon: SiIpfs,
-                name: 'IPFS',
+                icon: FaKey,
+                name: 'KeyCloak',
             },
             {
                 id: 'icon-7',
-                icon: SiArduino,
-                name: 'Arduino',
+                icon: FaStream,
+                name: 'Kafka',
             },
             {
                 id: 'icon-8',
-                icon: IoIosNotificationsOutline,
-                name: 'Push Protocol',
+                icon: SiPostgresql,
+                name: 'PostgreSQL',
             },
         ],
     },
@@ -646,28 +745,38 @@ export const projects = [
         stack: [
             {
                 id: 'icon-1',
-                icon: SiDotnet,
-                name: 'Dot Net Core MVC 6',
-            },
-            {
-                id: 'icon-2',
-                icon: SiBootstrap,
-                name: 'Bootstrap',
-            },
-            {
-                id: 'icon-3',
-                icon: DiMsqlServer,
-                name: 'MS Sql Server',
-            },
-            {
-                id: 'icon-4',
-                icon: SiJquery,
-                name: 'jQuery',
+                icon: SiJava,
+                name: 'Java',
             },
             {
                 id: 'icon-5',
-                icon: SiTwilio,
-                name: 'Twillio',
+                icon: DiSpark,
+                name: 'Spark',
+            },
+            {
+                id: 'icon-3',
+                icon: SiHive,
+                name: 'Hive',
+            },
+            {
+                id: 'icon-7',
+                icon: FaStream,
+                name: 'Kafka',
+            },
+            {
+                id: 'icon-4',
+                icon: FaPiggyBank,
+                name: 'Pig',
+            },
+            {
+                id: 'icon-8',
+                icon: FaFile,
+                name: 'HDFS',
+            },
+            {
+                id: 'icon-2',
+                icon: SiTableau,
+                name: 'Tableau',
             },
         ],
     },
@@ -682,8 +791,8 @@ export const projects = [
         stack: [
             {
                 id: 'icon-1',
-                icon: SiRubyonrails,
-                name: 'Ruby on Rails',
+                icon: SiJavascript,
+                name: 'JavaScript',
             },
             {
                 id: 'icon-2',
@@ -692,8 +801,33 @@ export const projects = [
             },
             {
                 id: 'icon-3',
-                icon: SiJquery,
-                name: 'jQuery',
+                icon: SiNextdotjs,
+                name: 'NextJS',
+            },
+            {
+                id: 'icon-4',
+                icon: SiReact,
+                name: 'React',
+            },
+            {
+                id: 'icon-5',
+                icon: SiGithub,
+                name: 'Github',
+            },
+            {
+                id: 'icon-6',
+                icon: SiAmazonaws,
+                name: 'Amazon AWS',
+            },
+            {
+                id: 'icon-7',
+                icon: AiFillHtml5,
+                name: 'HTML',
+            },
+            {
+                id: 'icon-8',
+                icon: DiCss3,
+                name: 'CSS',
             },
         ],
     },
@@ -703,53 +837,17 @@ export const projects = [
         github: 'https://github.com/duc-hoang-161/personal-website',
         image: repo,
         content:
-            'A web application that analyzes resumes and provides insights to recruiters. The application is built with ReactJS, NodeJs, and Django Rest Framework.',
+            'A web application that analyzes resumes and provides insights to recruiters based on NLP. The application is built with ReactJS, NodeJs, and Django Rest Framework.',
         stack: [
+            {
+                id: 'icon-7',
+                icon: SiPython,
+                name: 'Python',
+            },
             {
                 id: 'icon-1',
                 icon: SiDjango,
                 name: 'Django Rest Framework',
-            },
-            {
-                id: 'icon-2',
-                icon: SiFlutter,
-                name: 'Flutter',
-            },
-            {
-                id: 'icon-3',
-                icon: SiReplit,
-                name: 'Replit',
-            },
-            {
-                id: 'icon-3',
-                icon: SiFlask,
-                name: 'Flask',
-            },
-            {
-                id: 'icon-4',
-                icon: SiFigma,
-                name: 'Figma',
-            },
-            {
-                id: 'icon-4',
-                icon: SiGooglemaps,
-                name: 'Google Maps API',
-            },
-        ],
-    },
-    {
-        id: 'project-5',
-        title: 'JOMK-Game',
-        github: 'https://github.com/duc-hoang-161/JOMK-Game',
-        link: '',
-        image: repo,
-        content:
-            'A cross-platform game built with C++ using Cocos2d-x framework.',
-        stack: [
-            {
-                id: 'icon-1',
-                icon: SiDjango,
-                name: 'Django',
             },
             {
                 id: 'icon-2',
@@ -768,13 +866,49 @@ export const projects = [
             },
             {
                 id: 'icon-5',
-                icon: SiBootstrap,
-                name: 'Bootstrap',
+                icon: SiReact,
+                name: 'React',
             },
             {
                 id: 'icon-6',
-                icon: SiChartdotjs,
-                name: 'Chart.js',
+                icon: SiNodedotjs,
+                name: 'NodeJS',
+            },
+        ],
+    },
+    {
+        id: 'project-5',
+        title: 'JOMK Game',
+        github: 'https://github.com/duc-hoang-161/JOMK-Game',
+        link: '',
+        image: repo,
+        content:
+            'A cross-platform game built with C++ using Cocos2d-x game engine.',
+        stack: [
+            {
+                id: 'icon-1',
+                icon: SiCplusplus,
+                name: 'C++',
+            },
+            {
+                id: 'icon-2',
+                icon: SiCocos,
+                name: 'Cocos2d-x',
+            },
+            {
+                id: 'icon-3',
+                icon: SiGithub,
+                name: 'Github',
+            },
+            {
+                id: 'icon-4',
+                icon: SiAndroid,
+                name: 'Android',
+            },
+            {
+                id: 'icon-5',
+                icon: DiWindows,
+                name: 'Windows',
             },
         ],
     },
@@ -784,8 +918,13 @@ export const projects = [
         github: 'https://github.com/truyenda/truyenda-web-app',
         image: repo,
         content:
-            'A React application to help users visualise and minimise cash flow among multiple transactions.',
+            'A ReactJS web application that allows users to read and download free manga. The application is built with ReactJS.',
         stack: [
+            {
+                id: 'icon-0',
+                icon: SiJavascript,
+                name: 'JavaScript',
+            },
             {
                 id: 'icon-1',
                 icon: SiReact,

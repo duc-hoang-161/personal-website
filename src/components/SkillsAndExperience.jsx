@@ -113,7 +113,12 @@ const SkillsAndExperience = () => {
                 // transition={{ duration: 0.5 }}
             >
                 {/* Skills */}
-                <motion.div className={`ml-2 mb-6 ${layout.sectionInfo}`}>
+                <motion.div
+                    className={`ml-2 mb-6 justify-start ${layout.sectionInfo.replace(
+                        'justify-center',
+                        ''
+                    )} `}
+                >
                     {skills.map((skill, index) => (
                         <SkillCard index={index} {...skill} />
                     ))}
