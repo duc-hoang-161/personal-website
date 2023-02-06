@@ -16,6 +16,7 @@ import {
 } from './components';
 import Contact from './components/Contact';
 import Testimonial from './components/Testimonial';
+import System from './components/System';
 
 const App = () => {
     const [isLoading, setIsLoading] = React.useState(true);
@@ -62,6 +63,7 @@ const App = () => {
                             <Projects />
                             <ExtraCurricular />
                             <Contact />
+                            <System />
                         </div>
                     </div>
                     <Footer />

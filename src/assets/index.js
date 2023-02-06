@@ -48,8 +48,10 @@ import gameloft from './gameloft.png';
 import miu from './miu.png';
 import bk from './bk.jpeg';
 import repo from './repo.png';
+import systemDrawio from './system.drawio.png';
 
 export {
+    systemDrawio,
     ces,
     gameloft,
     miu,
