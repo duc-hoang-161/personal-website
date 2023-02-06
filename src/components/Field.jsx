@@ -8,6 +8,7 @@ export default function ({
     placeholder,
     onChange,
     error,
+    isSubmitted,
 }) {
     return (
         <div class="mb-4">
@@ -37,7 +38,9 @@ export default function ({
                 />
             )}
 
-            {error && <p class="text-red-500 text-xs italic mt-2">{error}</p>}
+            {isSubmitted && error && (
+                <p class="text-red-500 text-xs italic mt-2">{error}</p>
+            )}
         </div>
     );
 }
