@@ -61,6 +61,7 @@ const App = () => {
                             <SkillsAndExperience />
                             <Education />
                             <Projects />
+                            <BlogPosts enabled />
                             <ExtraCurricular />
                             <Contact />
                             <System />

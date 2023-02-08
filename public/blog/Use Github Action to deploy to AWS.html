@@ -1,0 +1,962 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Use Github Action to deploy to AWS</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="8c8faf1c-b6d1-4a2a-9883-b427a54cbda3" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb" style="object-position:center 50%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">💫</span></div><h1 class="page-title">Use Github Action to deploy to AWS</h1></header><div class="page-body"><p id="0122751c-7b80-41b0-b324-2429b69b1782" class=""><strong><a href="https://www.linkedin.com/in/htmduc/">Trong Minh Duc Hoang</a></strong> | <em>Feb 7, 2023</em></p><p id="ba13b53b-c8c1-40f7-af30-6130c2128918" class="">
+</p><nav id="8ddd0a72-2e8d-4b16-9b46-fb2b300eca09" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#d4a75cdc-8e30-4b59-b0b7-5366518bb2f2">Overview</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#d41b9397-1fec-4ee7-bf28-3ccb1c52d0a5"><strong>Prerequisite</strong></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#2554f4ec-edfc-4eaa-a31c-cf39bfc094ee">Deploy static website to S3 with Github Action</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#ef8a7cea-d45e-453a-8750-2fbdfbeb5ff3">1. Create AWS S3 bucket and enable ACLs</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#dbc6beac-9dba-4330-a801-d7ddf7cd8225">2. Create workflow for Github action</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#1d24d38a-64d2-49e4-86ff-69173f4e4806">3. Set env secrets</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#5e5b4dfd-77cf-4416-be57-6280c1aee547">4. Push code to Github and enjoy the automation</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#dd2ce103-32ae-43cb-a90a-69c9abf60387">5. Access S3 from Cloudfront</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#3a0cd4d2-3223-4de0-9672-68ceea18503e">6. Do some tricks after deployed</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#86a10127-165a-4f28-8c70-df6eed8cc21a">a. Create a role for Lambda</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#15ea9d05-0cb4-4a4e-aa29-e9a36bad79a5">b. Create a SNS topic and subcribe our email to it.</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#10d4f9df-5324-41e5-82f1-49e7805f9596">c. Create a Lambda</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#0d7e5416-37a1-4da4-b4b7-f393a0670646">d. Create a trigger from S3 bucket</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#49c3ef4a-4d8b-4fdc-817e-8f253db36861">Deploy backend NextJs application to ECS</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#ab1770fd-952a-4ac3-8c57-b979a9e47111">1. Create security groups</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#7b38abeb-e4dd-4d33-a8bd-82152fe49ae9">a. Create a security group for load balancer</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#18f00dd4-0987-4fdb-9cc9-9ed298aa2baf">b.  Create a security group for ECS container</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#84c6362b-2b17-4c15-8e54-34e049c1357e">2. Create a repository in ECR</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#f2fb5ac4-3d20-4c51-8c9f-03913d8b3eb9">3. Build &amp; push first image</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#70fbdb8d-331c-4a9b-9322-975b23d8816b">4. Create task definition</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#5f1b399c-4ea0-49ad-ac09-9e1d81adddc2">5. Create ECS cluster and service using Cloudformation</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#a53eb91f-5429-4fe4-a80f-8539801125e1">6. Create workflow for Github Action</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#3e621bdc-e357-4600-b630-d37a7d848ee2">a. Set env variables that we need for this workflow</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#1296800c-2e7f-460d-89fd-d8a5271393c2">b. Create the workflow file in the source code and push it to Github</a></div></nav><p id="6e7e0253-9c8e-4b5c-8250-ecd9862df2f4" class="">
+</p><h1 id="d4a75cdc-8e30-4b59-b0b7-5366518bb2f2" class="">Overview</h1><p id="76a6f7ac-a693-4eaf-908e-577455fb828a" class="">In this blog, we will use this infrastructure to do a step-by-step demo.</p><figure id="8b8e3443-ef5c-40a3-8503-aa5bbd9389dd" class="image"><a href="img/system.drawio.png"><img style="width:1161px" src="img/system.drawio.png"/></a></figure><p id="1d46b35b-1641-47d7-b5d5-77d9db128330" class="">
+</p><h1 id="d41b9397-1fec-4ee7-bf28-3ccb1c52d0a5" class=""><strong>Prerequisite</strong></h1><ul id="98b10789-4326-4a6d-8667-1821e4d25ec4" class="bulleted-list"><li style="list-style-type:disc">IAM credentials (AWS access key ID, AWS Secret access key, region name)</li></ul><ul id="fb0ec7e5-ca7b-4fa2-8d52-bcb54fffc1bf" class="bulleted-list"><li style="list-style-type:disc">Github repositories</li></ul><ul id="cc34de47-46ea-439b-955f-cddf3ea448e0" class="bulleted-list"><li style="list-style-type:disc">Docker </li></ul><ul id="3c97f07b-e02d-4bda-9bfa-fe66e6b881fe" class="bulleted-list"><li style="list-style-type:disc">NodeJs (yarn)</li></ul><h1 id="2554f4ec-edfc-4eaa-a31c-cf39bfc094ee" class="">Deploy static website to S3 with Github Action</h1><figure id="96d034d3-273e-47fe-8e33-272c09b01cbb" class="image"><a href="img/Untitled_Diagram.drawio_(1).png"><img style="width:1161px" src="img/Untitled_Diagram.drawio_(1).png"/></a></figure><h2 id="ef8a7cea-d45e-453a-8750-2fbdfbeb5ff3" class="">1. Create AWS S3 bucket and enable ACLs</h2><figure id="0bf3e46d-bfbf-4283-9f5e-2b327a88c78f" class="image"><a href="img/Screenshot_2023-02-07_at_3.17.06_PM.png"><img style="width:2390px" src="img/Screenshot_2023-02-07_at_3.17.06_PM.png"/></a></figure><ul id="4316101e-6957-4476-8041-ea437c44a448" class="bulleted-list"><li style="list-style-type:disc">Enable public access</li></ul><figure id="7ce804e4-8730-42d0-b71d-8cd3040f467e" class="image"><a href="img/Screenshot_2023-02-07_at_10.01.13_PM.png"><img style="width:1588px" src="img/Screenshot_2023-02-07_at_10.01.13_PM.png"/></a></figure><h2 id="dbc6beac-9dba-4330-a801-d7ddf7cd8225" class="">2. Create workflow for Github action</h2><p id="768942ca-be40-4196-8ad1-9d0eb97fe006" class="">In this demo, we are deploying an ReactJs app. Let’s explain some steps to build this app:</p><ul id="03940abc-e681-487e-a168-f888bd19a532" class="bulleted-list"><li style="list-style-type:disc">Run <code>yarn install</code> to install all dependencies.</li></ul><ul id="52b081fa-e76a-4c25-813a-38c8613aaf74" class="bulleted-list"><li style="list-style-type:disc">Run <code>yarn build</code> to build the app. The content of output folder will be pushed to S3. In my case, the output folder is <code>dist</code>.</li></ul><p id="2cd63a1f-bc77-4ddd-995e-0d6b6f6adaf7" class="">Create a workflow file inside the repository <code>.github/workflows/deploy.yml</code></p><figure id="b0d36155-5852-43ce-8228-a15326913ae1" class="image"><a href="img/Screenshot_2023-02-07_at_3.38.21_PM.png"><img style="width:1842px" src="img/Screenshot_2023-02-07_at_3.38.21_PM.png"/></a></figure><pre id="42f4036a-ccc0-438f-8846-8df76782ee70" class="code"><code>name: Production Build
+on:
+  pull_request:
+  push:
+    branches:
+      - main # the branch and action we want to trigger this workflow
+jobs:
+  build:
+    runs-on: ubuntu-latest # We use Uubuntu to run this workflow on
+    
+    strategy:
+      matrix:
+        node-version: [ 16.x ] # Set NodeJs version here
+    steps:
+    - uses: actions/checkout@v3 # Check out the repo
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3 # Install NodeJs in this Ubuntu
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Yarn Install # Run command to install all dependencies
+      run: |
+        yarn install
+    - name: Production Build # Build the file, the output folder in this case is dist
+      run: |
+        yarn build
+    - name: Deploy to S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read --delete
+      env: # All the keys we need from AWS will be passed into this action
+        AWS_S3_BUCKET: ${{ secrets.AWS_PRODUCTION_BUCKET_NAME }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        SOURCE_DIR: &quot;dist&quot; # The output folder of build step above (it depends on your app)</code></pre><h2 id="1d24d38a-64d2-49e4-86ff-69173f4e4806" class="">3. Set env secrets</h2><p id="9d5676b0-cf6a-4c10-9955-e4e6107a3445" class="">As you can see, we use four secret keys in above workflow. We need to define it in our repository’s setting and give it a value.</p><figure id="b9fada8f-f91c-46c1-a5e4-54f68f65cf1f" class="image"><a href="img/Screenshot_2023-02-07_at_3.44.48_PM.png"><img style="width:2412px" src="img/Screenshot_2023-02-07_at_3.44.48_PM.png"/></a></figure><h2 id="5e5b4dfd-77cf-4416-be57-6280c1aee547" class="">4. Push code to Github and enjoy the automation</h2><p id="45b02055-5f74-4aaf-9c19-646538eb46b5" class="">Github Action will automatically trigger this workflow when we push this workflow definition along with the code to the repo</p><div id="2e15d0bf-1e6c-4f8c-beba-3204ddf1c939" class="column-list"><div id="7b400cbc-938c-4e52-bb39-6d14134d2f82" style="width:50%" class="column"><figure id="a0d3175e-df00-4b0a-9b07-2e44dbf17902" class="image"><a href="img/Screenshot_2023-02-07_at_3.48.54_PM.png"><img style="width:2814px" src="img/Screenshot_2023-02-07_at_3.48.54_PM.png"/></a></figure></div><div id="95964693-6313-468d-9d61-731b1fb89720" style="width:50%" class="column"><figure id="fae7df48-5485-466e-a4d4-76450e908927" class="image"><a href="img/Screenshot_2023-02-07_at_3.53.59_PM.png"><img style="width:2132px" src="img/Screenshot_2023-02-07_at_3.53.59_PM.png"/></a></figure></div></div><blockquote id="fe944fec-25ec-41c1-b3eb-a901e3014f51" class="">To learn more about Github Action, you could go to this link to find an action that fits your need <a href="https://github.com/marketplace?type=actions&amp;query=s3+">https://github.com/marketplace?type=actions&amp;query=s3+</a> </blockquote><h2 id="dd2ce103-32ae-43cb-a90a-69c9abf60387" class="">5. Access S3 from Cloudfront</h2><p id="0db0202f-359e-402c-8db6-93187dfa6b9a" class="">Create a new distribution on Cloudfron to serve files from the S3 bucket. Now we can access our app publicly through Cloudfront.</p><div id="2b071a6d-e9fa-41b1-bfbf-80f9c4d419af" class="column-list"><div id="69ba8e76-3726-4d2b-97bd-0e60d1dcd14d" style="width:50%" class="column"><figure id="31a0ade8-289e-4e88-abef-af0f2d39c571" class="image"><a href="img/Screenshot_2023-02-07_at_10.04.39_PM.png"><img style="width:2018px" src="img/Screenshot_2023-02-07_at_10.04.39_PM.png"/></a></figure></div><div id="ae278e1d-b76c-4211-92b0-adaadf0e8342" style="width:50%" class="column"><figure id="ae54c461-9191-49b3-87b7-a132045871a3" class="image"><a href="img/Screenshot_2023-02-07_at_10.05.14_PM.png"><img style="width:2082px" src="img/Screenshot_2023-02-07_at_10.05.14_PM.png"/></a></figure></div></div><h2 id="3a0cd4d2-3223-4de0-9672-68ceea18503e" class="">6. Do some tricks after deployed</h2><ul id="f4840a59-6de6-4dc8-8a13-834770c66005" class="bulleted-list"><li style="list-style-type:disc">There is a problem each time we deploy the app, which is cached files on Cloudfront, so we won’t see new changes on the website because the cached files are valid within 24 hours. That why we want to create invalidation after each deployment. This code below shows a function to do it.</li></ul><ul id="ae250ee8-89e4-443d-ba25-e72f065b4bbe" class="bulleted-list"><li style="list-style-type:disc">We also want to know when is the deployment finished. In this case, we will use SNS to send an email to our inbox to inform the deployment is finished and ready on production.</li></ul><p id="66571ba6-053f-497a-9a88-d5cd30be8c36" class="">
+</p><h3 id="86a10127-165a-4f28-8c70-df6eed8cc21a" class="">a. Create a role for Lambda</h3><p id="b4f104e2-3782-417f-ac3b-c27cd9e10528" class="">Create a role for this Lambda that are enabled to publish message to SNS and create Cloudfront invalidation</p><figure id="efd6a6f0-2cf7-46e6-9ed7-ffd6d52b046c" class="image"><a href="img/Screenshot_2023-02-07_at_10.17.40_PM.png"><img style="width:2654px" src="img/Screenshot_2023-02-07_at_10.17.40_PM.png"/></a></figure><h3 id="15ea9d05-0cb4-4a4e-aa29-e9a36bad79a5" class="">b. Create a SNS topic and subcribe our email to it.</h3><h3 id="10d4f9df-5324-41e5-82f1-49e7805f9596" class="">c. Create a Lambda</h3><p id="105a69ec-6c99-41dc-9093-a8f748d09738" class="">Create a Lambda NodeJs 18 and assign above role to it. </p><p id="2ea0d65b-e610-4066-bb4b-2fe4df637919" class="">Fill out <code>YOUR_REGION</code>, <code>YOUR_TOPIC_ARN</code>, and <code>YOUR_DISTRIBUTION_ID</code>.</p><pre id="897229f6-fe30-48f4-af13-7514fe451608" class="code"><code>import { SNSClient, PublishCommand } from &quot;@aws-sdk/client-sns&quot;;
+import { CloudFrontClient, CreateInvalidationCommand } from &quot;@aws-sdk/client-cloudfront&quot;;
+
+const YOUR_REGION = &#x27;YOUR_REGION&#x27;;
+const YOUR_TOPIC_ARN = &#x27;YOUR_TOPIC_ARN&#x27;;
+const YOUR_DISTRIBUTION_ID = &#x27;YOUR_DISTRIBUTION_ID&#x27;;
+
+
+const sendNotiToEmail = async () =&gt; {
+    const client = new SNSClient({ region: YOUR_REGION });
+    const params = {
+        Message: `New version deployed at ${new Date(Date.now()).toLocaleString(&quot;en-US&quot;, { timeZone: &quot;America/Chicago&quot; })}`,
+        TopicArn: YOUR_TOPIC_ARN
+    };
+    const command = new PublishCommand(params);
+    const response = await client.send(command);
+    return response;
+}
+
+const clearCloudFrontCache = async () =&gt; {
+    const client = new CloudFrontClient({ region: YOUR_REGION });
+    const command = new CreateInvalidationCommand({
+        DistributionId: YOUR_DISTRIBUTION_ID,
+        InvalidationBatch: {
+            CallerReference: new Date().getTime().toString(),
+            Paths: {
+                Quantity: 1,
+                Items: [&#x27;/*&#x27;] // Clear all cached files
+            }
+        }
+    });
+    return client.send(command);
+}
+
+export const handler = async (event) =&gt; {
+
+    await sendNotiToEmail();
+    await clearCloudFrontCache();
+    return {
+        statusCode: 200,
+        body: &quot;Done&quot;
+    }
+};</code></pre><h3 id="0d7e5416-37a1-4da4-b4b7-f393a0670646" class="">d. Create a trigger from S3 bucket</h3><p id="7cadf967-2d43-46e9-a7a5-aa5df2a1519c" class="">Create a trigger from S3 bucket when <code>index.html</code> has an update to run this lambda function after deployed</p><figure id="be01be26-f17e-44b9-b8bc-b94df8cb392a" class="image"><a href="img/Screenshot_2023-02-07_at_10.28.37_PM.png"><img style="width:1978px" src="img/Screenshot_2023-02-07_at_10.28.37_PM.png"/></a></figure><p id="8e6c2ac4-77b4-4ef4-b893-c01631fe9537" class="">
+</p><hr id="71466448-9b2b-438e-b3ba-f00f22c86cef"/><p id="57ea2513-aa5d-429b-bfae-626a5089d1b5" class="">
+</p><h1 id="49c3ef4a-4d8b-4fdc-817e-8f253db36861" class="">Deploy backend NextJs application to ECS</h1><figure id="faec4556-f433-4ff3-a03d-314fa7cc0580" class="image"><a href="img/Untitled_Diagram.drawio_(2).png"><img style="width:1161px" src="img/Untitled_Diagram.drawio_(2).png"/></a></figure><h2 id="ab1770fd-952a-4ac3-8c57-b979a9e47111" class="">1. Create security groups</h2><h3 id="7b38abeb-e4dd-4d33-a8bd-82152fe49ae9" class="">a. Create a security group for load balancer</h3><p id="e701f501-17d8-4b47-816a-ea0f8f491829" class="">Allow all access from the internet (<code>MyLoadBalancerSg</code>)</p><figure id="a09c1bae-8f35-46e8-ae03-36d968c78e20" class="image"><a href="img/Screenshot_2023-02-07_at_10.55.25_PM.png"><img style="width:2624px" src="img/Screenshot_2023-02-07_at_10.55.25_PM.png"/></a></figure><h3 id="18f00dd4-0987-4fdb-9cc9-9ed298aa2baf" class="">b.  Create a security group for ECS container</h3><p id="2ea761f4-ace0-4290-af51-ef7a7148377d" class="">Only allow access from <code>MyLoadBalancerSg</code></p><figure id="55765ba5-67f3-47dd-a487-d6fe6a20d4d5" class="image"><a href="img/Screenshot_2023-02-08_at_1.02.43_PM.png"><img style="width:2678px" src="img/Screenshot_2023-02-08_at_1.02.43_PM.png"/></a></figure><p id="c43ecbc8-89d5-49da-9419-3afa7aebb20c" class="">
+</p><h2 id="84c6362b-2b17-4c15-8e54-34e049c1357e" class="">2. Create a repository in ECR</h2><figure id="638b1135-bcd7-4f8f-83a3-841b18ca3d1d" class="image"><a href="img/Screenshot_2023-02-07_at_11.00.26_PM.png"><img style="width:2350px" src="img/Screenshot_2023-02-07_at_11.00.26_PM.png"/></a></figure><h2 id="f2fb5ac4-3d20-4c51-8c9f-03913d8b3eb9" class="">3. Build &amp; push first image</h2><p id="cc462eba-c00c-418b-b351-dae9f3f7df33" class="">We will dockerize our NextJs application and push it to ECR repository.</p><ul id="11dd9d32-5d67-4f41-b42a-a48b244422bb" class="bulleted-list"><li style="list-style-type:disc">Create a file <code>Dockerfile</code> inside our code base</li></ul><pre id="69b1abc7-55f0-416f-abf9-44bb0ed68797" class="code"><code># Use an official Node.js image as the base image
+FROM node:16-alpine
+
+# Set the working directory in the image to /app
+WORKDIR /app
+
+# Copy the rest of the application code to the image
+COPY . .
+
+# Install the application dependencies
+RUN yarn install
+# Build nextjs application, output folder is .next
+RUN yarn build
+
+# Specify the command to start the Next.js application
+CMD [&quot;npm&quot;, &quot;run&quot;, &quot;start&quot;]
+EXPOSE 3000</code></pre><ul id="7bc8f6f3-06a0-427a-97f0-fe619bca0342" class="bulleted-list"><li style="list-style-type:disc">In our ECR repository, click on <code>View push commands</code> then follow these steps to push our first to this repo</li></ul><figure id="9c6dc0bf-e83b-4ca4-99be-f054d9c97a05" class="image"><a href="img/Screenshot_2023-02-08_at_12.56.30_PM.png"><img style="width:2112px" src="img/Screenshot_2023-02-08_at_12.56.30_PM.png"/></a></figure><h2 id="70fbdb8d-331c-4a9b-9322-975b23d8816b" class="">4. Create task definition</h2><ul id="ff3f7937-6143-4a22-a270-22de53f4520f" class="bulleted-list"><li style="list-style-type:disc">Go to ECS, click on Task Definition, and click on Create Task Definition</li></ul><ul id="9c500fb7-b4a2-4094-a470-0f87df97ae08" class="bulleted-list"><li style="list-style-type:disc">Create a task definition using the URI from above ECR (e.g: <code><a href="http://856210122328.drecr.us-east-1.amazonaws.com/mywebiste-be:latest">http://856210122328.drecr.us-east-1.amazonaws.com/mywebiste-be:latest</a></code>)</li></ul><ul id="a686f6d7-451d-4e17-b6bf-62e959fcc0b7" class="bulleted-list"><li style="list-style-type:disc">Map the port we want to expose from containers. In this case, NextJs’ port is 3000</li></ul><ul id="e1e75dbe-2659-4f19-9ba8-00b877fab70d" class="bulleted-list"><li style="list-style-type:disc">Pass env variables as your wish to containers</li></ul><p id="346b6096-7366-4896-b328-368cffae37d3" class="">
+</p><figure id="491201ab-bd08-4a92-a527-3a0390413cb4" class="image"><a href="img/Screenshot_2023-02-07_at_11.10.42_PM.png"><img style="width:2162px" src="img/Screenshot_2023-02-07_at_11.10.42_PM.png"/></a></figure><p id="b94c8aae-10a6-4edd-8b62-df3c97e798e2" class="">
+</p><h2 id="5f1b399c-4ea0-49ad-ac09-9e1d81adddc2" class="">5. Create ECS cluster and service using Cloudformation</h2><p id="3d9f0ab9-d93f-4c52-bc7c-4a8f45663800" class="">We will use this Cloudformation template to create the rest of the service. We can still do it manually on the UI but when we create an ECS service inside the ECS cluster, there is a glitch that makes the Load Balancer section disappear so we cannot create a load balancer along with our ECS service. By doing it with Cloudformation, it will make sure we always have a load balancer when creating a ECS service.</p><ul id="50291cae-d1b1-45ae-82bd-6b7b49b5b0f1" class="bulleted-list"><li style="list-style-type:disc">Create a yaml file for this template (e.g: <code>myecsstack.yml</code>)</li></ul><ul id="3486eb4f-6c0f-4b81-8418-c03e35b8038d" class="bulleted-list"><li style="list-style-type:disc">Replace all the parameters in the template</li></ul><pre id="3a4e0689-d1c9-4f90-bedb-fd619beff9ab" class="code"><code>AWSTemplateFormatVersion: 2010-09-09
+Description: The template used to create an ECS Service from the ECS Console.
+Parameters:
+    # (REPLACE THIS) Enter the security group IDs for the load balancer and the container that were created in the previous step.
+    LoadBalancerSecurityGroup:
+        Type: CommaDelimitedList
+        Default: sg-04e9e5c992ae5d43c
+    ContainerSecurityGroup:
+        Type: CommaDelimitedList
+        Default: sg-011d187169c541958
+    # (REPLACE THIS) Enter the subnet IDs for the VPC where the load balancer and the container will be created.
+    SubnetIDs:
+        Type: CommaDelimitedList
+        Default: &gt;-
+            subnet-0f1cffba22f6b4742,subnet-01a6bb4ca617d76e6,subnet-066dd3cb1343aa92d,subnet-06431437c9d252d83,subnet-05ece4ddfab51758e,subnet-0d719136bbfff4870
+    VpcID:
+        Type: String
+        Default: vpc-04b4663f76ce16dd8
+		# (REPLACE THIS) Create a new role with `AmazonECSTaskExecutionRolePolicy` and enter its arn here
+    TaskRole:
+        Type: String
+        Default: arn:aws:iam::856210122328:role/ecsTaskExecutionRole
+		# (REPLACE THIS) Enter the task definition&#x27;s arn that we created from above step
+		TaskDefinitionArn:
+        Type: String
+        Default: arn:aws:ecs:us-east-1:856210122328:task-definition/mywebsite:1
+    # Choose whatever you want for below parameters
+    ECSClusterName:
+        Type: String
+        Default: mywebsite-cluster
+    LoadBalancerName:
+        Type: String
+        Default: MyLoadBalancerECS
+    ServiceName:
+        Type: String
+        Default: mywebsite-service
+    ContainerName:
+        Type: String
+        Default: mywebsite
+    ContainerPort:
+        Type: Number
+        Default: 3000 # matching with the exposed port from docker
+    TargetGroupName:
+        Type: String
+        Default: MyTargetGroupECS
+Resources:
+    ECSCluster:
+        Type: &#x27;AWS::ECS::Cluster&#x27;
+        Properties:
+            ClusterName: !Ref ECSClusterName
+    ECSService:
+        Type: &#x27;AWS::ECS::Service&#x27;
+        Properties:
+            Cluster: !Ref ECSClusterName
+            CapacityProviderStrategy:
+                - CapacityProvider: FARGATE
+                  Base: 0
+                  Weight: 1
+            TaskDefinition: !Ref TaskDefinitionArn
+            ServiceName: !Ref ServiceName
+            SchedulingStrategy: REPLICA
+            DesiredCount: 1
+            LoadBalancers:
+                - ContainerName: !Ref ContainerName
+                  ContainerPort: !Ref ContainerPort
+                  LoadBalancerName: !Ref &#x27;AWS::NoValue&#x27;
+                  TargetGroupArn: !Ref TargetGroup
+            NetworkConfiguration:
+                AwsvpcConfiguration:
+                    AssignPublicIp: ENABLED
+                    SecurityGroups: !Ref ContainerSecurityGroup
+                    Subnets: !Ref SubnetIDs
+            PlatformVersion: LATEST
+            DeploymentConfiguration:
+                MaximumPercent: 200
+                MinimumHealthyPercent: 100
+                DeploymentCircuitBreaker:
+                    Enable: true
+                    Rollback: true
+            DeploymentController:
+                Type: ECS
+            ServiceConnectConfiguration:
+                Enabled: false
+            Tags:
+                - Key: &#x27;ecs:service:stackId&#x27;
+                  Value: !Ref &#x27;AWS::StackId&#x27;
+            EnableECSManagedTags: true
+        DependsOn:
+            - Listener
+    LoadBalancer:
+        Type: &#x27;AWS::ElasticLoadBalancingV2::LoadBalancer&#x27;
+        Properties:
+            Type: application
+            Name: !Ref LoadBalancerName
+            SecurityGroups: !Ref LoadBalancerSecurityGroup
+            Subnets: !Ref SubnetIDs
+    TargetGroup:
+        Type: &#x27;AWS::ElasticLoadBalancingV2::TargetGroup&#x27;
+        Properties:
+            HealthCheckPath: /
+            Name: !Ref TargetGroupName
+            Port: !Ref ContainerPort
+            Protocol: HTTP
+            TargetType: ip
+            HealthCheckProtocol: HTTP
+            VpcId: !Ref VpcID
+    Listener:
+        Type: &#x27;AWS::ElasticLoadBalancingV2::Listener&#x27;
+        Properties:
+            DefaultActions:
+                - Type: forward
+                  TargetGroupArn: !Ref TargetGroup
+            LoadBalancerArn: !Ref LoadBalancer
+            Port: 80
+            Protocol: HTTP</code></pre><p id="0560f484-bf17-418f-941b-d9ba871e8aac" class="">
+</p><ul id="8159f59c-361a-4bd1-b588-ff31e92fcd33" class="bulleted-list"><li style="list-style-type:disc">After done with the template, go to Cloudformation and upload this file to create these services.</li></ul><ul id="464ed27f-e191-4703-9dd7-72dd1a203ce6" class="bulleted-list"><li style="list-style-type:disc">Check if the load balancer working as expected</li></ul><h2 id="a53eb91f-5429-4fe4-a80f-8539801125e1" class="">6. Create workflow for Github Action</h2><p id="4eab1eda-005e-4e0a-be55-3e8e5bd660d1" class="">There is an official workflow to deploy AWS ECS on Github. You could go to your repository Click on <code>Actions</code> \ <code>New workflow</code> , and search for <code>ecs</code></p><p id="731239b6-c674-4313-b6b3-fd3407560992" class="">
+</p><figure id="c73a9d8e-d5b7-4011-8098-face10e6e64a" class="image"><a href="img/Screenshot_2023-02-08_at_1.25.16_PM.png"><img style="width:2166px" src="img/Screenshot_2023-02-08_at_1.25.16_PM.png"/></a></figure><p id="da24db3c-401c-478a-a34d-e6bafdb7ed12" class="">But in this guide line, we will customize the official workflow a little bit. </p><ul id="65b259e6-a546-42d9-adb3-675d16de688d" class="bulleted-list"><li style="list-style-type:disc">We will download task definition and export it to a json file instead of providing a preset task definition json in our repo.</li></ul><ul id="41969d29-5d67-4f7b-a92d-f590969e6b4f" class="bulleted-list"><li style="list-style-type:disc">Add a last step to send email to our inbox after everything is done <code>Notify SNS</code> using the same SNS topic that we created from previous section so we know when everything is done.</li></ul><pre id="15262fd4-f471-44d2-a276-811284b66405" class="code"><code>
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches: [ &quot;main&quot; ]
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}             # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}   # set this to your Amazon ECR repository name
+  ECS_SERVICE: ${{secrets.ECS_SERVICE}}                 # set this to your Amazon ECS service name
+  ECS_CLUSTER: ${{secrets.ECS_CLUSTER}}                 # set this to your Amazon ECS cluster name
+  CONTAINER_NAME: ${{secrets.CONTAINER_NAME}}          # set this to the name of the container in the
+  ECS_TASK_DEFINITION_NAME: ${{secrets.ECS_TASK_DEFINITION_NAME}}
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition &quot;${{secrets.ECS_TASK_DEFINITION_NAME}}&quot; --query taskDefinition &gt; task-definition.json
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo &quot;image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG&quot; &gt;&gt; $GITHUB_OUTPUT
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.build-image.outputs.image }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+    
+    - name: Notify SNS
+      run: |
+        aws sns publish --topic-arn &quot;${{secrets.SNS_ARN}}&quot; --message &quot;New Backend Deployment at $(date +%c)&quot;</code></pre><h3 id="3e621bdc-e357-4600-b630-d37a7d848ee2" class="">a. Set env variables that we need for this workflow</h3><ul id="28075921-b9e8-466c-a60d-f10d8f4987a6" class="bulleted-list"><li style="list-style-type:disc">AWS_REGION</li></ul><ul id="1d234a2a-f06a-4510-8ff3-fcc86e652ebd" class="bulleted-list"><li style="list-style-type:disc">ECR_REPOSITORY</li></ul><ul id="675f804d-7207-498f-8994-0aa7585701e9" class="bulleted-list"><li style="list-style-type:disc">ECS_SERVICE</li></ul><ul id="65decc77-e0a1-45c8-b8c8-2e93c62bf9b5" class="bulleted-list"><li style="list-style-type:disc">ECS_CLUSTER</li></ul><ul id="7014af6e-e554-4355-87f0-07d2bbd16c92" class="bulleted-list"><li style="list-style-type:disc">CONTAINER_NAME</li></ul><ul id="5c78dcbe-1527-4f3a-a4ba-fc236a5ad2cc" class="bulleted-list"><li style="list-style-type:disc">ECS_TASK_DEFINITION_NAME</li></ul><ul id="9ce34aad-2697-4cba-aade-7f9345e2de70" class="bulleted-list"><li style="list-style-type:disc">AWS_ACCESS_KEY_ID</li></ul><ul id="7594205f-c47f-41c1-b01c-a2ea700805c1" class="bulleted-list"><li style="list-style-type:disc">AWS_SECRET_ACCESS_KEY</li></ul><ul id="686d7e62-3724-4d9b-be1d-e0b5c8e80030" class="bulleted-list"><li style="list-style-type:disc">SNS_ARN</li></ul><figure id="00ea06ac-11f4-434d-9be1-e46fcf67c004" class="image"><a href="img/Screenshot_2023-02-08_at_1.38.14_PM.png"><img style="width:2270px" src="img/Screenshot_2023-02-08_at_1.38.14_PM.png"/></a></figure><h3 id="1296800c-2e7f-460d-89fd-d8a5271393c2" class="">b. Create the workflow file in the source code and push it to Github</h3><p id="9e1448b1-0f1e-4111-a5b5-253b9406dbf1" class="">
+</p><figure id="6ff0162f-afc7-4727-98cb-aaf5c6214291" class="image"><a href="img/Screenshot_2023-02-08_at_1.46.15_PM.png"><img style="width:921px" src="img/Screenshot_2023-02-08_at_1.46.15_PM.png"/></a></figure><figure id="5847c552-6689-4b32-b439-f141523d4791" class="image"><a href="img/Screenshot_2023-02-08_at_1.38.55_PM.png"><img style="width:2804px" src="img/Screenshot_2023-02-08_at_1.38.55_PM.png"/></a></figure><p id="76b09903-cca7-423e-a37b-180604468568" class="">
+</p><p id="4c0e6b2f-25aa-4ff2-ad11-6d2dfce0a520" class="">Finally, a new task definition will be deployed in ECS service and replace the previous version. Its private IP will be automatically register to the target group that we created along with load balancer and ECS service.</p><p id="3d5423d9-f6db-4c8c-9717-64d03aa6f477" class="">There is something you can do to optimize this workflow:</p><ul id="3a6c6f9c-1bce-4b4d-9d59-d57f570e67a3" class="bulleted-list"><li style="list-style-type:disc">Reduce the size of the docker image</li></ul><ul id="7ceaec77-66fa-45ee-84e5-8dbc5373dab0" class="bulleted-list"><li style="list-style-type:disc">Clean up unused image in ECR because it will cost us a lot</li></ul><p id="98292618-e664-41f0-b28b-14d2d70de706" class="">
+</p></div></article></body></html>
