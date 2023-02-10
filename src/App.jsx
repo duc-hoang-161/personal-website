@@ -59,10 +59,10 @@ const App = () => {
                     >
                         <div className={`${styles.boxWidth}`}>
                             <SkillsAndExperience />
+                            <ExtraCurricular />
                             <Education />
                             <Projects />
                             <BlogPosts enabled />
-                            <ExtraCurricular />
                             <Contact />
                             <System />
                         </div>
