@@ -360,28 +360,28 @@ export const experiences = [
         logo: ces,
         link: 'https://www.codeenginestudio.com/',
         positions: [
-            {
-                title: 'Software Developer (Remote)',
-                duration: 'Aug 2022 - Feb 2023',
-                content: [
-                    {
-                        text: 'Designed technical solutions that aligned with business goals, customer requirements, and industry best practices.',
-                        link: ''
-                    },
-                    {
-                        text: 'Collaborated with the development team to code reviews and provided constructive feedback to team members to ensure code quality, maintainability, and scalability.',
-                        link: ''
-                    },
-                    {
-                        text: 'Provided technical solutions that align with business goals, customer requirements, and industry best practices.',
-                        link: ''
-                    },
-                    {
-                        text: 'Conducted feasibility studies to evaluate the viability of implementing new technologies and platforms in existing systems.',
-                        link: ''
-                    }
-                ],
-            },
+            // {
+            //     title: 'Software Developer (Remote)',
+            //     duration: 'Aug 2022 - Feb 2023',
+            //     content: [
+            //         {
+            //             text: 'Designed technical solutions that aligned with business goals, customer requirements, and industry best practices.',
+            //             link: ''
+            //         },
+            //         {
+            //             text: 'Collaborated with the development team to code reviews and provided constructive feedback to team members to ensure code quality, maintainability, and scalability.',
+            //             link: ''
+            //         },
+            //         {
+            //             text: 'Provided technical solutions that align with business goals, customer requirements, and industry best practices.',
+            //             link: ''
+            //         },
+            //         {
+            //             text: 'Conducted feasibility studies to evaluate the viability of implementing new technologies and platforms in existing systems.',
+            //             link: ''
+            //         }
+            //     ],
+            // },
             {
                 title: 'Software Developer',
                 duration: 'Feb 2020 - Jul 2022',
